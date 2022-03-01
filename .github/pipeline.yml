@@ -1,0 +1,23 @@
+name: Pipeline
+
+on: [push]
+env:
+  APPLICATION_NAME: hello
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run Python script
+        run: python hello.py
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [test]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Upload artifact for linux
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.APPLICATION_NAME }}
+          path: .
